@@ -1,0 +1,3 @@
+subscription:
+  source: xxx
+  channel: release-2.7

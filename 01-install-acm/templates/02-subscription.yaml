@@ -1,0 +1,10 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: acm-operator-subscription
+spec:
+  sourceNamespace: openshift-marketplace
+  source: {{ .Values.subscription.source }}
+  channel: {{ .Values.subscription.channel }}
+  installPlanApproval: Manual
+  name: advanced-cluster-management

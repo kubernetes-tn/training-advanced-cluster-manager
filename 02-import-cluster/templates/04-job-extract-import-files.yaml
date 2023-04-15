@@ -1,0 +1,9 @@
+## TODO
+oc get secret {{ .Values.managedClusterName }}-import \
+  -n {{ .Values.managedClusterName }} -o jsonpath={.data.crds\\.yaml} | base64 \
+  --decode > klusterlet-crd.yaml
+
+
+oc get secret {{ .Values.managedClusterName }}-import \
+  -n {{ .Values.managedClusterName }} -o jsonpath={.data.import\\.yaml} | base64 \
+  --decode > import.yaml
