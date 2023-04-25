@@ -1,2 +1,3 @@
+# oc get packagemanifests advanced-cluster-management -o jsonpath='{.status.channels[0].currentCSVDesc.version}'
 acmVersion: 2.7.2
 managedClusterName: mycluster

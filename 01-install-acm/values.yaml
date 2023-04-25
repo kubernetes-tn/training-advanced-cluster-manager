@@ -1,3 +1,4 @@
 subscription:
   source: xxx
+  # oc get packagemanifests advanced-cluster-management -o jsonpath='{.status.channels[0].name}'
   channel: release-2.7

@@ -1,0 +1,19 @@
+examplePolicy:
+  # k explain policy.spec.disabled
+  disabled: false
+  #  name of the policy
+  # k explain policy.metadata.name
+  name: policy-namespace
+  # k explain policy.metadata.annotations["policy.open-cluster-management.io/standards"]
+  standards: NIST SP 800-53
+  # k explain policy.metadata.annotations["policy.open-cluster-management.io/categories"]
+  categories: CM Configuration Management
+  # k explain policy.metadata.annotations["policy.open-cluster-management.io/controls"]
+  controls: CM-2 Baseline Configuration
+  # k explain policy.spec.remediationAction
+  remediationAction: inform
+  # k explain placementrule.spec.clusterSelector
+  # This parameter specifies a cluster or set of clusters for policy placement
+  clusterSelector:
+    matchExpressions:
+      - {key: environment, operator: In, values: ["dev"]}

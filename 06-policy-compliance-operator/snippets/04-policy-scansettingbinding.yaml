@@ -1,0 +1,30 @@
+## The following example of a ScanSettingBinding object 
+##  references two profiles: ocp4-e8 and rhcos4-e8. 
+apiVersion: policy.open-cluster-management.io/v1
+kind: ConfigurationPolicy
+metadata:
+  name: compliance-e8-scan
+spec:
+  ## The remediationAction is defined with inform so 
+  ## that RHACM will verify that the object exists but will not create the object if the object does not exist.
+  remediationAction: inform
+  severity: high
+  object-templates:
+    - complianceType: musthave # this template creates ScanSettingBinding:e8
+      objectDefinition:
+        apiVersion: compliance.openshift.io/v1alpha1
+        kind: ScanSettingBinding
+        metadata:
+          name: e8
+          namespace: openshift-compliance
+        profiles:
+        - apiGroup: compliance.openshift.io/v1alpha1
+          kind: Profile
+          name: ocp4-e8
+        - apiGroup: compliance.openshift.io/v1alpha1
+          kind: Profile
+          name: rhcos4-e8
+        settingsRef:
+          apiGroup: compliance.openshift.io/v1alpha1
+          kind: ScanSetting
+          name: default
