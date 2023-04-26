@@ -1,0 +1,152 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  annotations:
+    policy.open-cluster-management.io/categories: PR.IP Information Protection Processes and Procedures
+    policy.open-cluster-management.io/controls: PR.IP-1 Baseline Configuration
+    policy.open-cluster-management.io/standards: NIST-CSF
+  name: policy-gatekeeperoperator
+  namespace: policy-gatekeeper
+spec:
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: gatekeeper-operator-product-sub
+        spec:
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: operators.coreos.com/v1alpha1
+                kind: Subscription
+                metadata:
+                  name: gatekeeper-operator-product
+                  namespace: openshift-operators
+                spec:
+                  channel: stable
+                  installPlanApproval: Automatic
+                  name: gatekeeper-operator-product
+                  source: redhat-operators # TODO
+                  sourceNamespace: openshift-marketplace
+          remediationAction: inform
+          severity: high
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: gatekeeper
+        spec:
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: operator.gatekeeper.sh/v1alpha1
+                kind: Gatekeeper
+                metadata:
+                  name: gatekeeper
+                spec:
+                  audit:
+                    logLevel: INFO
+                    replicas: 1
+                  mutatingWebhook: Disabled
+                  validatingWebhook: Enabled
+                  webhook:
+                    emitAdmissionEvents: Enabled
+                    logLevel: INFO
+                    replicas: 2
+          remediationAction: inform
+          severity: high
+  remediationAction: enforce
+status:
+  compliant: Compliant
+  placement:
+    - placementBinding: binding-policy-gatekeeperoperator
+      placementRule: placement-policy-gatekeeperoperator
+  status:
+    - clustername: local-cluster
+      clusternamespace: local-cluster
+      compliant: Compliant
+    - clustername: managed-cluster
+      clusternamespace: managed-cluster
+      compliant: Compliant
+
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  creationTimestamp: '2023-04-25T05:46:15Z'
+  generation: 1
+  managedFields:
+    - apiVersion: policy.open-cluster-management.io/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:placementRef:
+          .: {}
+          f:apiGroup: {}
+          f:kind: {}
+          f:name: {}
+        f:subjects: {}
+      manager: unknown
+      operation: Update
+      time: '2023-04-25T05:46:15Z'
+  name: binding-policy-gatekeeperoperator
+  namespace: policy-gatekeeper
+  resourceVersion: '775138'
+  uid: 0cb35fc0-b3ea-4cfc-bd68-0d38c9d148e0
+placementRef:
+  apiGroup: apps.open-cluster-management.io
+  kind: PlacementRule
+  name: placement-policy-gatekeeperoperator
+subjects:
+  - apiGroup: policy.open-cluster-management.io
+    kind: Policy
+    name: policy-gatekeeperoperator
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  annotations:
+    open-cluster-management.io/user-group: c3lzdGVtOmF1dGhlbnRpY2F0ZWQ6b2F1dGgsc3lzdGVtOmF1dGhlbnRpY2F0ZWQ=
+    open-cluster-management.io/user-identity: YWRtaW4=
+  creationTimestamp: '2023-04-25T05:46:15Z'
+  generation: 1
+  managedFields:
+    - apiVersion: apps.open-cluster-management.io/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:status:
+          .: {}
+          f:decisions: {}
+      manager: multicluster-operators-placementrule
+      operation: Update
+      subresource: status
+      time: '2023-04-25T05:46:15Z'
+    - apiVersion: apps.open-cluster-management.io/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:spec:
+          .: {}
+          f:clusterConditions: {}
+          f:clusterSelector:
+            .: {}
+            f:matchExpressions: {}
+      manager: unknown
+      operation: Update
+      time: '2023-04-25T05:46:15Z'
+  name: placement-policy-gatekeeperoperator
+  namespace: policy-gatekeeper
+  resourceVersion: '775143'
+  uid: cd6cbf29-8db6-4ff0-aaf5-91702cb1467d
+spec:
+  clusterConditions:
+    - status: 'True'
+      type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions: []
+status:
+  decisions:
+    - clusterName: local-cluster
+      clusterNamespace: local-cluster
+    - clusterName: managed-cluster
+      clusterNamespace: managed-cluster
