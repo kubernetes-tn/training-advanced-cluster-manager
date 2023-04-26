@@ -1,0 +1,10 @@
+apiVersion: apps.open-cluster-management.io/v1 #API name of the object
+kind: PlacementRule
+metadata:
+  name: cluster
+  # The value of namespace is required and specifies the namespace resource web-app for the placement rule.
+  namespace: web-app
+spec:
+  clusterSelector:
+    matchLabels:
+      clusterid: cluster

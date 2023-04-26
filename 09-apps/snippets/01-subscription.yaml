@@ -1,0 +1,12 @@
+apiVersion: apps.open-cluster-management.io/v1
+kind: Subscription
+metadata:
+  name: web-app-cluster1
+  namespace: web-app
+  labels:
+    deployment: hello
+  annotations:
+    # The optional github-branch annotation specifies that the branch, main, contains the deployment IaC files.
+    apps.open-cluster-management.io/github-branch: main
+    #The optional github-path annotation specifies that the application is deployed from the mysql directory from the source repository.
+    apps.open-cluster-management.io/github-path: mysql
