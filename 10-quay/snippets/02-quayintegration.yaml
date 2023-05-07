@@ -1,0 +1,3 @@
+# Require Quay Bridge Operator
+kind: QuayIntegration
+## TODO

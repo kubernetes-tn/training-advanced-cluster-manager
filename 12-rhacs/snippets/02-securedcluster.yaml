@@ -1,0 +1,33 @@
+apiVersion: platform.stackrox.io/v1alpha1
+kind: SecuredCluster
+metadata:
+  name: stackrox-secured-cluster-services
+  namespace: stackrox
+## @docs spec: https://docs.openshift.com/acs/3.69/installing/install-ocp-operator.html#secured-cluster-configuration-options-operator_install-ocp-operator
+spec:
+  auditLogs:
+    collection: Auto
+  admissionControl:
+    listenOnUpdates: true
+    bypass: BreakGlassAnnotation
+    contactImageScanners: DoNotScanInline
+    listenOnCreates: true
+    timeoutSeconds: 3
+    listenOnEvents: true
+  scanner:
+    analyzer:
+      scaling:
+        autoScaling: Enabled
+        maxReplicas: 5
+        minReplicas: 2
+        replicas: 3
+    scannerComponent: AutoSense
+  perNode:
+    collector:
+      collection: KernelModule
+      imageFlavor: Regular
+    taintToleration: TolerateTaints
+  # name as per RHACM ManagedCluster.metadata.name
+  clusterName: managed-cluster
+  # as per oc get route central -n stackrox
+  centralEndpoint: 'central-stackrox.apps.ocp4.example.com:443'

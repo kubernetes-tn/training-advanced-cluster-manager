@@ -1,0 +1,23 @@
+apiVersion: config.openshift.io/v1
+kind: Image  1
+metadata:
+  annotations:
+    release.openshift.io/create-only: "true"
+  creationTimestamp: "2022-05-17T13:44:26Z"
+  generation:
+  name: cluster
+spec:
+  # The config map that contains additional certificate authorities (CA) to trust on external registries.
+  additionalTrustedCA:
+    name: my-ca-configmap
+  registrySources:
+    allowedRegistries:
+    - quay.io
+    - registry.redhat.io
+    - image-registry.openshift-image-registry.svc:5000
+    - reg.example/myrepo/myapp:latest
+    - my.registry.com
+    insecureRegistries:
+    - my.insecure.co
+status:
+  internalRegistryHostname: image-registry.openshift-image-registry.svc:5000

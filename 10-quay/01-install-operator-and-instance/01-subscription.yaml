@@ -1,0 +1,12 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: quay-operator
+  #  recommends installing the operator cluster-wide, making it available in all namespaces
+  namespace: openshift-operators
+spec:
+  sourceNamespace: openshift-marketplace
+  source: redhat-operators
+  channel: stable-3.6
+  installPlanApproval: Automatic
+  name: quay-operator

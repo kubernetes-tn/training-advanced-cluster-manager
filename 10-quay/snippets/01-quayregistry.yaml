@@ -1,0 +1,29 @@
+apiVersion: quay.redhat.com/v1
+kind: QuayRegistry
+metadata:
+  name: central
+  namespace: registry
+spec:
+  components:
+  - kind: clair
+    managed: true
+  - kind: horizontalpodautoscaler
+    managed: true
+  - kind: mirror
+    managed: true
+  - kind: postgres
+    managed: true
+  - kind: redis
+    managed: true
+  - kind: objectstorage
+    managed: true
+  - kind: route
+    managed: true
+  - kind: monitoring
+    managed: true
+  - kind: tls
+    managed: true
+  # Optional
+  # Define the Secret object in the same namespace that the registry.
+  #  This secret contain a config.yaml file to configuret he Quay registry.
+  configBundleSecret: init-config-bundle-secret

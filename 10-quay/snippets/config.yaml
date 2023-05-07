@@ -1,0 +1,35 @@
+#### START - 1st AUTOMATION ####
+# Ship it in k8s secret
+## Enables the /api/v1/user/initialize Quay API endpoint
+### to create the first user
+FEATURE_USER_INITIALIZE: true
+## Allows access to the Quay registry API without using an X-Requested-With header.
+## Thus, command-line and automation tools can use the API without a browser.
+BROWSER_API_CALLS_XHR_ONLY: false
+# List of users that become super users after first log in.
+SUPER_USERS:
+- quayadmin
+# Restrict the creation of users to super users.
+# By default, it's "true" -> means users can register by themselves.
+# It must be TRUE if you have USer Federation
+FEATURE_USER_CREATION: false
+#### END - 1st AUTOMATION ####
+
+##### START - USER Federation with LDAP #####
+FEATURE_USER_CREATION: true
+AUTHENTICATION_TYPE: LDAP
+LDAP_ADMIN_DN: uid=admin,cn=users,cn=accounts,dc=ocp4,dc=example,dc=com
+LDAP_ADMIN_PASSWD: MyLAPAdminP@SS
+LDAP_ALLOW_INSECURE_FALLBACK: false
+LDAP_BASE_DN:
+    - cn=accounts
+    - dc=ocp4
+    - dc=example
+    - dc=com
+LDAP_EMAIL_ATTR: mail
+LDAP_UID_ATTR: uid
+LDAP_URI: ldap://myldap.ocp4.example.com
+### sync LDAP groups <-> Quay Teams
+FEATURE_TEAM_SYNCING: true
+
+##### END - USER FEDERATION WITH LDAP ####
